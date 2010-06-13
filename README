@@ -7,8 +7,6 @@ Grandpa is a graphical MVC application framework for Ruby, built on top of the G
 
 Grandpa has a simple API for defining views, binding them to model properties, and describing their states with respect to UI behaviors.  It comes equipped with behaviors such as clicking, dragging, and selection ready to use.  In addition, Grandpa provides primitive shape objects, backgrounds, pointer states, tweening and animation.
 
-Example uses of Grandpa would be a skinnable game, UI for a ruby Arduino project, or a visualization of a web service.
-
 The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyforge.org)
   
   
