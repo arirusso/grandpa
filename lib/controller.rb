@@ -19,11 +19,10 @@ module Grandpa::Controller
       send(signal) if methods.include?(signal)
     end
     
-    def record_mousedown(type = :single)
+    def handle_mousedown(type = :single)
       clicked_on = @app.clicked_views.map { |view| view.model }
       handle_mousedown_action(clicked_on)
       @state.mousedown[type] = { :time => Time.now, :items => clicked_on }
-      #@state.resize.clear
     end
     
     def handle_mouseup(type = :single)
@@ -86,7 +85,7 @@ module Grandpa::Controller
   module Clicking
     
     def left_mousedown
-      record_mousedown
+      handle_mousedown
       #models.with_name('square').tween!(:to => mouse_position)
     end
     

@@ -13,12 +13,14 @@ module Grandpa
   end
 end
 
+# geom classes
 require 'lib/geom/base'
 require 'lib/geom/line'
 require 'lib/geom/rectangle'
 require 'lib/geom/cyclic_polygon'
 require 'lib/geom/triangle'
 require 'lib/geom/point'
+
 require 'lib/animation'
 require 'lib/background'
 require 'lib/image'
