@@ -3,7 +3,7 @@ class Grandpa::Geom::CyclicPolygon
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   def initialize(num_sides, size, color, location, options = {})
     super(size, color, location, options)

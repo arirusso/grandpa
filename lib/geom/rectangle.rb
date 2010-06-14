@@ -3,7 +3,7 @@ class Grandpa::Geom::Rectangle
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   def draw(gosu_window)
     gosu_window.draw_quad(x, y, @bgcolor, x_bound, y, @bgcolor, x_bound, y_bound, @bgcolor, x, y_bound, @bgcolor, @zorder) unless @bgcolor.nil?

@@ -2,7 +2,7 @@ class Grandpa::Animation
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   def initialize(shapes, options = {})
     @shapes = shapes

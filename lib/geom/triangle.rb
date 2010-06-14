@@ -3,7 +3,7 @@ class Grandpa::Geom::Triangle
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   def draw(gosu_window)
     gosu_window.draw_line(@location.x, y_bound, @color, x_bound, y_bound, @color, @zorder)

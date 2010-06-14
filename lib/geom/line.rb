@@ -3,7 +3,7 @@ class Grandpa::Geom::Line
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   attr_accessor :end_point, :start_point
   

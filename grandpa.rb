@@ -13,8 +13,9 @@ module Grandpa
   end
 end
 
+require 'lib/viewable'
+
 # geom classes
-require 'lib/geom/base'
 require 'lib/geom/line'
 require 'lib/geom/rectangle'
 require 'lib/geom/cyclic_polygon'

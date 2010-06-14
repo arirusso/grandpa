@@ -2,7 +2,7 @@ class Grandpa::Image
   #ns
   include Grandpa::Geom
   #mod
-  include Grandpa::Geom::Base
+  include Grandpa::Viewable
   
   def initialize(path, size_proc, location_proc, options = {})
     @path = path
