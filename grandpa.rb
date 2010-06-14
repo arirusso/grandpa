@@ -33,10 +33,12 @@ require 'lib/model_container'
 require 'lib/select_modes'
 require 'lib/tween'
 require 'lib/ui_state'
-require 'lib/view_base'
+require 'lib/view_set'
 require 'lib/visible_state'
 require 'lib/visible_state_manager'
 require 'lib/window'
+
+require 'lib/simple_pointer'
 
 require 'lib/mvc'
 require 'lib/app'

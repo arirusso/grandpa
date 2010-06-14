@@ -22,11 +22,11 @@ class DraggingApp
     include Grandpa::Controller::Dragging    
   end
   
-  class View
+  class Views
     
-    include Grandpa::ViewBase
+    include Grandpa::ViewSet
     
-    def describe_view_of(model)
+    def describe_views_of(model)
       # the following defines the view for the "base" default state of the square
       state :base do
         # an Animation can animate any number of objects that include the module Grandpa::Viewable
@@ -52,7 +52,7 @@ class DraggingApp
     @name = 'Dragging' # this becomes the window caption
     @controller = Controller.new(self)
     use_simple_pointer('examples/images/pointer.png')
-    add_model(Model.new, :looks_like => View.new)
+    add_model(Model.new, :looks_like => Views.new)
   end
   
 end

@@ -54,7 +54,7 @@ module Grandpa::Mvc
   end
   
   def add_view_from_class(view, model)
-    view.describe_view_of(model) # yes, this method has a weird name
+    view.describe_views_of(model) # yes, this method has a weird name
     # what it actually does is build the view using the model that is passed in.
     # the naming is done for higher-level convenience (see Views example)
     unless view.states.nil? or view.states.empty?
@@ -173,22 +173,7 @@ module Grandpa::Mvc
   end
   
   def use_simple_pointer(image)
-      view = Class.new do
-  
-        include Grandpa::ViewBase
-        
-        def initialize(image)
-          @image = image
-          super()
-        end
-        
-        def describe_view_of(model)
-          state :base do
-            has :component => Image.new(@image, bind_to(model, :size), bind_to(model, :location), :zorder => 20) 
-          end
-        end
-  
-      end.new(image)
+      view = SimplePointer.new(image)
       pointer_model = Grandpa::Model.new(:name => :pointer, :size => Point[12,12])
       use_pointer(pointer_model, :looks_like => view) 
   end

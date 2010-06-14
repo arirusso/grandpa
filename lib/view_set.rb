@@ -1,15 +1,15 @@
-module Grandpa::ViewBase
+module Grandpa::ViewSet
   
-  class Subview 
+  class SubviewSet 
     
-    include Grandpa::ViewBase
+    include Grandpa::ViewSet
 
     def initialize(proc)
       @my_proc = proc
       @states = {}
     end
     
-    def describe_view_of(model)
+    def describe_views_of(model)
       @my_proc.call(self,model)
     end
 
@@ -38,7 +38,7 @@ module Grandpa::ViewBase
   
   def describe(name, &proc)
     @components = {} if @components.nil?
-    @components[name] = Subview.new(proc)    
+    @components[name] = SubviewSet.new(proc)    
   end
   
   def subview(name, view)
@@ -48,7 +48,7 @@ module Grandpa::ViewBase
   
   def main(view, opts = {})
     model = opts[:use]
-    view.describe_view_of(model) unless model.nil?
+    view.describe_views_of(model) unless model.nil?
     @states = view.states
     @components = view.components
   end
@@ -61,8 +61,4 @@ module Grandpa::ViewBase
     state
   end
   
-end
-
-class Grandpa::View
-  include Grandpa::ViewBase
 end
