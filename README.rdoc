@@ -5,7 +5,7 @@ Copyright:: Copyright (c) 2010 Ari Russo
 
 == Summary
 
-Grandpa an MVC application framework that extends the Gosu game development library for Ruby.
+Grandpa is an MVC application framework for Ruby that extends the Gosu game development library.
 
 == Description 
 
