@@ -36,8 +36,6 @@ module Grandpa::Controller
           @state.mousedown[type] = nil
           @app.deselect_all! if mode.deselect_on_clicked_background?
         else
-          
-          #@app.modes[:play].handle_click(:objects => @state.mousedown[mousedown[:type]][:items], :interface => @app.interface)
           mode.handle_mousedown(models, @app.selection)
           @state.mousedown[type] = nil
         end
@@ -86,7 +84,6 @@ module Grandpa::Controller
     
     def left_mousedown
       handle_mousedown
-      #models.with_name('square').tween!(:to => mouse_position)
     end
     
     def left_mouseup

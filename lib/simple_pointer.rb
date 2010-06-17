@@ -1,6 +1,6 @@
 class Grandpa::SimplePointer
   
-  include Grandpa::ViewSet
+  include Grandpa::ViewFactory
   
   def initialize(image)
     @image = image

@@ -4,12 +4,10 @@ module Grandpa::Mvc
   include Grandpa
   include Grandpa::Geom
   extend Forwardable
-  #extend Callbacks
 
   attr_accessor :background,
               :controller,
               :models,
-              #:pointer_image,
               :name,
               :selection,
               :size, 
@@ -25,9 +23,7 @@ module Grandpa::Mvc
     @window.caption = @name
     @started = true
     @background.init(@window) if @background.kind_of?(Image) and !@background.nil? 
-    #init_pointer
-    #@pointer = Pointer.new(@window, @pointer_image[:base], :resize_image => @pointer_image[:resize], :zorder => 10)
-    lazy_initialize_if_needed 
+    initialize_views 
     @window.show
     after_start if respond_to?(:after_start)
   end
@@ -58,7 +54,7 @@ module Grandpa::Mvc
     # what it actually does is build the view using the model that is passed in.
     # the naming is done for higher-level convenience (see Views example)
     unless view.states.nil? or view.states.empty?
-      view = Grandpa::VisibleStateManager.new(model, view)
+      view = Grandpa::ViewManager.new(model, view)
       add_view(view, model)
     end
   end
@@ -112,10 +108,6 @@ module Grandpa::Mvc
     end
   end
   
-  #def draw_pointer
-  #  @pointer.draw(@window)
-  #end
-  
   def draw_views
     @views.each { |view| view.draw(@window) }
   end
@@ -131,7 +123,6 @@ module Grandpa::Mvc
   end
   
   def update_observed(model, signal, data)
-    #handle_event(signal) if model.kind_of?(EventHander)
     case signal
       when :destroy! then destroy_model!(model) 
       when :children_added! then add_model(model)
@@ -173,15 +164,15 @@ module Grandpa::Mvc
   end
   
   def use_simple_pointer(image)
-      view = SimplePointer.new(image)
-      pointer_model = Grandpa::Model.new(:name => :pointer, :size => Point[12,12])
-      use_pointer(pointer_model, :looks_like => view) 
+    view = SimplePointer.new(image)
+    pointer_model = Grandpa::Model.new(:name => :pointer, :size => Point[12,12])
+    use_pointer(pointer_model, :looks_like => view) 
   end
   
   private
   
   # this is for views that require the window to be initialized
-  def lazy_initialize_if_needed
+  def initialize_views
     @views.each { |v| v.lazy_initialize(@window) }
   end
   

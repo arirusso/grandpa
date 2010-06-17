@@ -1,4 +1,4 @@
-class Grandpa::VisibleStateManager
+class Grandpa::ViewManager
   
   #ns
   include Grandpa::Geom
@@ -26,17 +26,17 @@ class Grandpa::VisibleStateManager
     mgr
   end
   
-  def in_resize_zone?(other_view)
-    visible_state.intersects?(other_view.visible_state) and 
-      other_view.visible_state.location.x <= visible_state.bounds.x and 
-        other_view.visible_state.bounds.x >= visible_state.bounds.x
-  end
+  #def in_resize_zone?(other_view)
+  #  visible_state.intersects?(other_view.visible_state) and 
+  #    other_view.visible_state.location.x <= visible_state.bounds.x and 
+  #      other_view.visible_state.bounds.x >= visible_state.bounds.x
+  #end
 
   #def info_location
   #  Point[10,8]  
   #end
   
-  def handle_auto_state(signal)
+  def handle_state_change(signal)
     signal = signal.to_s.chop # get rid of the exclamation point
     # parse the signal
     operator = signal.split('_').first 
@@ -53,7 +53,7 @@ class Grandpa::VisibleStateManager
       # these are exceptional cases
       when :de_assoc! then delete_associated_visible_state(data)
       when :hover! then insert_visible_state(:hover) # hover gets inserted instead of added
-      else handle_auto_state(signal)
+      else handle_state_change(signal)
     end
     all_states.each { |s| s.update_observed(model, signal, data) if s.respond_to?('update_observed') }
   end

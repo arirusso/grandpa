@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.description = "Grandpa is a graphical MVC application framework for Ruby, built on top of the Gosu game development library."
   s.summary = "Ruby graphical MVC application framework"
   s.email = ["ari.russo@gmail.com"]
-  s.extra_rdoc_files = ["README"]
+  s.extra_rdoc_files = ["README.rdoc"]
   s.files = Dir.glob("{lib}/**/*") + %w(README.rdoc)
   s.homepage = %q{http://github.com/arirusso/grandpa}
   s.rdoc_options = ["--main", "README.rdoc"]

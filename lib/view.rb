@@ -1,4 +1,4 @@
-class Grandpa::VisibleState
+class Grandpa::View
   
   #namespaces
   include Grandpa::Geom

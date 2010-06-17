@@ -24,7 +24,7 @@ class DraggingApp
   
   class Views
     
-    include Grandpa::ViewSet
+    include Grandpa::ViewFactory
     
     def describe_views_of(model)
       # the following defines the view for the "base" default state of the square

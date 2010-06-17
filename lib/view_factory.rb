@@ -1,8 +1,8 @@
-module Grandpa::ViewSet
+module Grandpa::ViewFactory
   
-  class SubviewSet 
+  class SubviewFactory
     
-    include Grandpa::ViewSet
+    include Grandpa::ViewFactory
 
     def initialize(proc)
       @my_proc = proc
@@ -38,7 +38,7 @@ module Grandpa::ViewSet
   
   def describe(name, &proc)
     @components = {} if @components.nil?
-    @components[name] = SubviewSet.new(proc)    
+    @components[name] = SubviewFactory.new(proc)    
   end
   
   def subview(name, view)
@@ -54,7 +54,7 @@ module Grandpa::ViewSet
   end
   
   def has(args)
-    Grandpa::VisibleState.new(args)
+    Grandpa::View.new(args)
   end
   
   def is(state)
