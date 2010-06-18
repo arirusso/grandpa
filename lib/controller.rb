@@ -34,9 +34,9 @@ module Grandpa::Controller
         models = @state.mousedown[type][:items]
         if models.empty?
           @state.mousedown[type] = nil
-          @app.deselect_all! if mode.deselect_on_clicked_background?
+          @state.deselect_all if mode.deselect_on_clicked_background?
         else
-          mode.handle_mousedown(models, @app.selection)
+          mode.handle_mousedown(models, @state.selection)
           @state.mousedown[type] = nil
         end
       end
@@ -53,13 +53,13 @@ module Grandpa::Controller
     
     
     def handle_mousedown_action(models)
-      models.each { |model| model.mousedown_proc.call(:selection => @app.selection) }
+      models.each { |model| model.mousedown_proc.call(:selection => @state.selection) }
     end
     
     def handle_drag_action(amount, type)
       @state.drag += @state.mousedown[type][:items].find_all { |item| item.draggable? and item.can_drag_proc.call(:pointer => @app.pointer) } 
       @state.drag.uniq!
-      @state.drag.each { |item| item.drag_proc.call(:amount => amount, :selection => @app.selection, :pointer => @app.pointer) }
+      @state.drag.each { |item| item.drag_proc.call(:amount => amount, :selection => @state.selection, :pointer => @app.pointer) }
     end
     
     def handle_drag(amount)

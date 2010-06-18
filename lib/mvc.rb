@@ -9,7 +9,6 @@ module Grandpa::Mvc
               :controller,
               :models,
               :name,
-              :selection,
               :size, 
               :views,
               :window
@@ -38,10 +37,6 @@ module Grandpa::Mvc
   
   def find_view(model)
     @views.find { |view| view.model.eql?(model) }
-  end
-
-  def delete_selection!
-    @selection.each { |s| s.destroy! }
   end
   
   def use_fullscreen_fit_to_current_resolution
@@ -141,16 +136,6 @@ module Grandpa::Mvc
     pointer.location = @window.m
   end
   
-  def deselect_all!
-    @selection.each { |selectable| selectable.deselect_proc.call({}) }
-    @selection.clear
-  end
-  
-  def delete_selected!
-    delete_selection!
-    deselect_all
-  end
-  
   def use_pointer(model, options={})
     model.name = :pointer
     add_model(model, options)
@@ -188,9 +173,8 @@ module Grandpa::Mvc
     @name ||= options[:name] || :Grandpa
     Thread.abort_on_exception = true  
     @models = ModelContainer.new
-    @selection,
     @view_factories,
-    @views = [],[],[]
+    @views = [],[]
     @size ||= Point[1000, 600]
     @fullscreen = false
     @inited = true
