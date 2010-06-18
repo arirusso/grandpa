@@ -1,4 +1,4 @@
-module Grandpa::SelectModes
+module Grandpa::SelectMode
     
   module Base
 

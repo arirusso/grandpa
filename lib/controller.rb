@@ -19,10 +19,10 @@ module Grandpa::Controller
       send(signal) if methods.include?(signal)
     end
     
-    def handle_mousedown(type = :single)
-      clicked_on = @app.clicked_views.map { |view| view.model }
-      handle_mousedown_action(clicked_on)
-      @state.mousedown[type] = { :time => Time.now, :items => clicked_on }
+    def handle_mousedown(select_type = :single)
+      models_clicked_on = @app.views.find_all { |view| view.intersects?(find_view(@pointer)) and view.model.clickable? }
+      handle_mousedown_action(models_clicked_on)
+      @state.mousedown[select_type] = { :time => Time.now, :items => models_clicked_on }
     end
     
     def handle_mouseup(type = :single)
@@ -73,8 +73,8 @@ module Grandpa::Controller
     
     def select_mode(name)
       case name
-        when :multi then Grandpa::SelectModes::Multi.instance
-        when :single then Grandpa::SelectModes::Single.instance
+        when :multi then Grandpa::SelectMode::Multi.instance
+        when :single then Grandpa::SelectMode::Single.instance
       end
     end
     

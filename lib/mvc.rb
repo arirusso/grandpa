@@ -28,10 +28,6 @@ module Grandpa::Mvc
     @window.close
   end
   
-  def clicked_views
-    @views.find_all { |view| view.intersects?(find_view(@pointer)) and view.model.clickable? }
-  end
-  
   def find_view(model)
     @views.find { |view| view.model.eql?(model) }
   end
@@ -41,13 +37,11 @@ module Grandpa::Mvc
     @fullscreen = true
   end
   
-  def add_view_from_view_factory(view, model)
-    view.describe_views_of(model) # yes, this method has a weird name
-    # what it actually does is build the view using the model that is passed in.
-    # the naming is done for higher-level convenience (see Views example)
-    unless view.states.nil? or view.states.empty?
-      view = Grandpa::ViewManager.new(model, view)
-      add_view(view, model)
+  def add_view_from_view_factory(view_factory, model)
+    view_factory.describe_views_of(model)
+    unless view_factory.states.nil? or view_factory.states.empty?
+      view_manager = Grandpa::ViewManager.new(model, view_factory)
+      add_view(view_manager, model)
     end
   end
 
