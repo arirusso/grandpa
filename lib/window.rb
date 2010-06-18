@@ -7,13 +7,15 @@ class Grandpa::Window < Gosu::Window
   
   include Observable 
   attr_accessor :m, :md, :fonts
+  attr_reader :fullscreen
   alias_method :mouse_position, :m
   alias_method :mouse_move_amount, :md
               
-  def initialize(app,*a)
+  def initialize(app, width, height, fullscreen, update_interval = 16.666666)
     @m, @md = Point.new(0,0), Point.new(0,0)
     @app = app
-    super(*a)
+    @fullscreen = fullscreen
+    super(width, height, fullscreen, update_interval)
     init_fonts
   end
   

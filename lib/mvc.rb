@@ -8,8 +8,7 @@ module Grandpa::Mvc
   attr_accessor :background,
               :controller,
               :models,
-              :name,
-              :size, 
+              :name, 
               :views,
               :window
                 
@@ -17,9 +16,7 @@ module Grandpa::Mvc
   
   def start!
     init_mvc unless @inited
-    @window = Grandpa::Window.new(self, @size.x, @size.y, @fullscreen)
     @window.add_observer(@controller) unless @controller.nil?
-    @window.caption = @name
     @started = true
     @background.init(@window) if @background.kind_of?(Image) and !@background.nil? 
     initialize_views 
@@ -170,13 +167,15 @@ module Grandpa::Mvc
   
   def init_mvc(options = {})
     @started = false
-    @name ||= options[:name] || :Grandpa
     Thread.abort_on_exception = true  
     @models = ModelContainer.new
     @view_factories,
     @views = [],[]
-    @size ||= Point[1000, 600]
-    @fullscreen = false
+    fullscreen = options[:fullscreen] || false
+    size = (options[:size] || Point[1000, 600])
+    @window = Grandpa::Window.new(self, size.x, size.y, fullscreen)
+    name = (options[:name] || :Grandpa)
+    @window.caption = name
     @inited = true
   end
   
