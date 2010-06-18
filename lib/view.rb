@@ -55,7 +55,7 @@ class Grandpa::View
     end
   end
   
-  def lazy_initialize(window)
+  def handle_window_initialization(window)
     @components.each_value { |component| component.init(window) if component.respond_to?('init') }
   end
   

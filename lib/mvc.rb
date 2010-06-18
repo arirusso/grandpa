@@ -49,7 +49,7 @@ module Grandpa::Mvc
     @fullscreen = true
   end
   
-  def add_view_from_class(view, model)
+  def add_view_from_view_factory(view, model)
     view.describe_views_of(model) # yes, this method has a weird name
     # what it actually does is build the view using the model that is passed in.
     # the naming is done for higher-level convenience (see Views example)
@@ -68,31 +68,25 @@ module Grandpa::Mvc
     @views << view
   end
   
+  # finds the stored ViewFactory for model
+  def find_view_factory_for_model(model)
+    map = @view_factories.find { |v| v[:model].eql?(model) }
+    map[:factory] unless map.nil?
+  end
+  
+  # adds a model to the model collection and instantiates its views
   def add_model(model, options={})
     init_mvc unless @inited
     model.init_model unless model.initialized?
-    if options[:looks_like].nil?
-      map = @view_factories.find { |v| v[:model].eql?(model) }
-      view_factory = map[:factory] unless map.nil?
-    else
-      view_factory = options[:looks_like]
-    end
-    add_view_from_class(view_factory, model) if find_view(model).nil?
+    view_factory = options[:looks_like].nil? ? find_view_factory_for_model(model) : options[:looks_like]
+    add_view_from_view_factory(view_factory, model) if find_view(model).nil?
     unless @models.include?(model)
       model.add_observer(self)
       @models << model
+      # keep the view factory around incase you want to use it again later
       @view_factories << { :model => model, :factory => view_factory } unless view_factory.nil?
     end
-    if model.respond_to?(:children) and !model.children.empty?
-      model.children.each do |name, child|
-        view = view_factory.components[name] rescue nil
-        if child.kind_of?(Array)
-          child.each { |obj| add_model(obj, :looks_like => view) }   
-        else
-          add_model(child, :looks_like => view)
-        end
-      end
-    end
+    add_model_children(model, view_factory) if model.has_children?
     model
   end
   
@@ -171,9 +165,22 @@ module Grandpa::Mvc
   
   private
   
+  # adds the children of a model, and collects their views from the view factory
+  def add_model_children(model, view_factory)
+    model.children.each do |name, child|
+      view = view_factory.components[name] rescue nil
+      if child.kind_of?(Array)
+        child.each { |obj| add_model(obj, :looks_like => view) }   
+      else
+        add_model(child, :looks_like => view)
+      end
+    end
+  end
+  
+  
   # this is for views that require the window to be initialized
   def initialize_views
-    @views.each { |v| v.lazy_initialize(@window) }
+    @views.each { |v| v.handle_window_initialization(@window) }
   end
   
   def init_mvc(options = {})

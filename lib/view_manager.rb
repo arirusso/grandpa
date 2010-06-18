@@ -1,3 +1,8 @@
+# each model object that has views is observed by a ViewManager  
+# 
+# it carries a hash of views (@states) that belong to the model and represent various UI states such as "hover" and "selected".  
+# it also has 3 stacks of views that represent the currently staged view states
+    
 class Grandpa::ViewManager
   
   #ns
@@ -5,14 +10,16 @@ class Grandpa::ViewManager
   #mod
   extend Forwardable
   
-  attr_accessor :model, 
+  attr_accessor :associated_states,
+                :model, 
                 :states, 
-                :staged_states
+                :staged_states,
+                :transient_states
   
-  def initialize(model, view, options={})
+  def initialize(model, view_factory, options={})
     @model = model
     @states = {}
-    states = view.states
+    states = view_factory.states
     states.each { |key,view| @states[key] = view }
     @staged_states = [@states[:base]]
   end
@@ -85,8 +92,8 @@ class Grandpa::ViewManager
     visible_state.draw(surface, @model, show_label)
   end
   
-  def lazy_initialize(window)
-    all_states.each { |state| state.lazy_initialize(window) }
+  def handle_window_initialization(window)
+    all_states.each { |state| state.handle_window_initialization(window) }
   end
   
   # pushes a visible state to the stage

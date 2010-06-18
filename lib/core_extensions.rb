@@ -1,7 +1,8 @@
 require 'observer'
 # change observer method name to update_observed
-# performance changes
 module Observable
+  
+  attr_accessor :observer_peers
 
   def add_observer(observer)
     @observer_peers = [] unless defined? @observer_peers

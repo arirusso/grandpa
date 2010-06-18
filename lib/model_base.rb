@@ -26,6 +26,7 @@ module Grandpa::ModelBase
               
               
   alias_method :initialized?, :initialized
+  
                  
   def state_change(signal, data = {})
     changed
@@ -160,6 +161,10 @@ module Grandpa::ModelBase
   
   def init_model
     initialize_base
+  end
+  
+  def has_children?
+    respond_to?(:children) and !children.empty?
   end
   
   private
