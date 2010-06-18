@@ -9,7 +9,9 @@ Grandpa is an MVC application framework for Ruby that extends the Gosu game deve
 
 == Description 
 
-Grandpa has a simple API for defining views, binding them to model properties, and describing state with respect to UI behaviors.  It comes equipped with pre-defined behaviors such as clicking, dragging, and selection.  In addition, Grandpa provides primitive shape objects, backgrounds, pointer states, tweening and animation.
+Grandpa has a simple API for defining views, binding them to model properties, and describing state with respect to UI behaviors.  It comes equipped with pre-defined behaviors such as clicking, dragging, and selection.  
+
+Grandpa provides primitive shape objects, backgrounds, pointer states, tweening and animation, and does not obscure access to all of the great Gosu functions
 
 The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyforge.org)
   
