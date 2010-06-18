@@ -24,6 +24,10 @@ module Grandpa::Mvc
     after_start if respond_to?(:after_start)
   end
   
+  def clicked_views
+    @views.find_all { |view| view.intersects?(find_view(@pointer)) and view.model.clickable? }
+  end
+  
   def exit!
     @window.close
   end

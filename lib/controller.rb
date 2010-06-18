@@ -12,22 +12,23 @@ module Grandpa::Controller
     def initialize(app)
       @app = app
       @state = Grandpa::UiState.new
+      @select_modes = { :multi => Grandpa::SelectMode::Multi.new, :single => Grandpa::SelectMode::Single.new }
     end
     
     def update_observed(model, signal, data)
       signal = signal.to_s unless RUBY_VERSION >= "1.9.0"
       send(signal) if methods.include?(signal)
     end
-    
+        
     def handle_mousedown(select_type = :single)
-      models_clicked_on = @app.views.find_all { |view| view.intersects?(find_view(@pointer)) and view.model.clickable? }
+      models_clicked_on = @app.clicked_views.map { |view| view.model }
       handle_mousedown_action(models_clicked_on)
       @state.mousedown[select_type] = { :time => Time.now, :items => models_clicked_on }
     end
     
     def handle_mouseup(type = :single)
       @app.models.each { |model| model.mouseup_proc.call({}) if model.clickable? }
-      mode = select_mode(type)
+      mode = @select_modes[type]
       unless mode.nil?
         handle_drag_release
         #handle_resize_release
@@ -51,32 +52,28 @@ module Grandpa::Controller
       @state.drag.clear
     end
     
-    
     def handle_mousedown_action(models)
       models.each { |model| model.mousedown_proc.call(:selection => @state.selection) }
     end
     
+    def get_draggable(type)
+      @state.mousedown[type][:items].find_all { |model| model.draggable? and model.can_drag_proc.call(:pointer => @app.pointer) }
+    end
+    
     def handle_drag_action(amount, type)
-      @state.drag += @state.mousedown[type][:items].find_all { |item| item.draggable? and item.can_drag_proc.call(:pointer => @app.pointer) } 
+      @state.drag += get_draggable(type)
       @state.drag.uniq!
       @state.drag.each { |item| item.drag_proc.call(:amount => amount, :selection => @state.selection, :pointer => @app.pointer) }
     end
     
-    def handle_drag(amount)
-      types = [:single, :multi]
-      types.each do |type|
-        unless @state.mousedown[type].nil?
-          handle_drag_action(amount, type) if @state.mousedown[type][:time] <= (Time.now - DragDelay) and @state.resize.empty?
-        end
-      end       
+    def dragging_allowed?(type)
+      (!@state.mousedown[type].nil? and @state.mousedown[type][:time] <= (Time.now - DragDelay) and @state.resize.empty?)  
     end
     
-    def select_mode(name)
-      case name
-        when :multi then Grandpa::SelectMode::Multi.instance
-        when :single then Grandpa::SelectMode::Single.instance
-      end
+    def handle_drag(amount)
+      @select_modes.each_key { |type| handle_drag_action(amount, type) if dragging_allowed?(type) }
     end
+  
     
   end
   
@@ -98,6 +95,7 @@ module Grandpa::Controller
     
     def mouse_move
       handle_drag(mouse_move_amount)
-    end 
+    end
+    
   end
 end

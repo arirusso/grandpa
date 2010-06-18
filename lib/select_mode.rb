@@ -11,7 +11,6 @@ module Grandpa::SelectMode
     
     #mod
     include Base
-    include Singleton
     
     def initialize
       @deselect_on_clicked_background = true
@@ -41,7 +40,6 @@ module Grandpa::SelectMode
     
     #mod
     include Base
-    include Singleton
     
     def initialize
       @deselect_on_clicked_background = false
