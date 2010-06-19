@@ -42,26 +42,21 @@ class Grandpa::ViewManager
   #def info_location
   #  Point[10,8]  
   #end
-  
-  def handle_state_change(signal)
-    signal = signal.to_s.chop # get rid of the exclamation point
-    # parse the signal
-    operator = signal.split('_').first 
-    if operator.eql?('no') or operator.eql?('de') or operator.eql?('end')
-      state = signal.split('_')[1]
-      remove_visible_state(state.to_sym)
-    else
-      add_visible_state(signal.to_sym)
-    end
-  end
+
   
   def update_observed(model, signal, data)
     case signal
       # these are exceptional cases
-      when :de_assoc! then delete_associated_visible_state(data)
-      when :hover! then insert_visible_state(:hover) # hover gets inserted instead of added
-      else handle_state_change(signal)
+      when :de_assoc then delete_associated_visible_state(data)
+      when :mouseover then insert_visible_state(:mouseover) # hover gets inserted instead of added
+      when :mouseout then remove_visible_state(:mouseover)
+      when :mouseup then remove_visible_state(:mousedown)
+      when :drag then remove_visible_state(:drag_available)
+      when :drag_release then remove_visible_state(:drag)
+      when :select then remove_visible_state(:select_available)
+      when :deselect then remove_visible_state(:select) 
     end
+    add_visible_state(signal.to_sym)
     all_states.each { |s| s.update_observed(model, signal, data) if s.respond_to?('update_observed') }
   end
 

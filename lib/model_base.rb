@@ -129,7 +129,7 @@ module Grandpa::Model::Base
     @size ||= options[:size] 
     @marked_for_deletion ||= false
     options[:behavior] ||= @behavior
-    @behavior = Grandpa::Model::UiBehavior.new(options)
+    @behavior = Grandpa::Model::UiBehavior.new(self, options)
     #@views_proc ||= options[:looks_like]
     @name ||= options[:name]
     @children ||= options[:children] || {}

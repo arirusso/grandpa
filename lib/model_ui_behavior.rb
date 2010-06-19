@@ -1,8 +1,9 @@
 module Grandpa::Model
   
+  # I may merge this back in to Model::Base at some point
   class UiBehavior
     
-    attr_accessor :drag_available,
+    attr_writer :drag_available,
       :drag,
       :drag_release,
       :mousedown,
@@ -50,8 +51,8 @@ module Grandpa::Model
     end
     
     def make_clickable!
-      @mousedown ||= lambda { |args| args[:model].state_change(:mousedown!) }
-      @mouseup ||= lambda { |args| args[:model].state_change(:end_mousedown!) }
+      @mousedown ||= lambda { |args| }
+      @mouseup ||= lambda { |args| }
     end
     
     def make_resizable!
@@ -62,30 +63,37 @@ module Grandpa::Model
     
     def make_selectable!
       @select_available ||= lambda { |args| }
-      @select ||= lambda { |args| args[:model].state_change(:select!) }
-      @deselect ||= lambda { |args| args[:model].state_change(:de_select!) }
+      @select ||= lambda { |args|  }
+      @deselect ||= lambda { |args| }
     end
     
     def make_draggable!
       @drag_available ||= lambda { |args| }
       @drag ||= lambda do |args|
-        args[:model].state_change(:dragging!)
         args[:model].move_by(args[:amount])
       end
-      @drag_release ||= lambda { |args| args[:model].state_change(:end_dragging!) }
+      @drag_release ||= lambda { |args| }
       #@dragging_enabled = true
     end
     
-    def initialize(options = {})
-      
+    # triggers the state change signal automatically when a callback is called
+    def method_missing(m, *args, &block)
+      if public_methods.include?("#{m}=")
+        @model.state_change(m.to_sym)
+        return instance_variable_get("@#{m}")
+      end
+    end
+    
+    def initialize(model, options = {})
+      @model = model
       # the ||= nil's are just for show
       @drag_available ||= nil
       @drag ||= nil
       @drag_release ||= nil
       @mousedown ||= nil
       @mouseup ||= nil
-      @mouseover ||= lambda { |args| args[:model].state_change(:hover!) }
-      @mouseout ||= lambda { |args| args[:model].state_change(:no_hover!) }
+      @mouseover ||= lambda { |args| }
+      @mouseout ||= lambda { |args| }
       @resize_available ||= nil
       @resize ||= nil
       @resize_release ||= nil
