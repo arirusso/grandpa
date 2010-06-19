@@ -1,33 +1,24 @@
-module Grandpa::ModelBase
- 
-  extend Forwardable
+module Grandpa::Model::Base
+  
+  #ns
   include Grandpa::Geom
+  #mod
+  extend Forwardable
   include Observable
- 
+  
   attr_accessor :absolute_position,
-              :can_drag_proc,
-              :deselect_proc,
-              :dragging_enabled,
-              :drag_proc,
-              :drag_release_proc,
-              :mousedown_proc,
-              :mouseup_proc,
-              :hover_proc,
+              :behavior,
+              #:can_drag_proc,
+              #:dragging_enabled,
               :initialized,
               :location,
               :marked_for_deletion,
               :name, 
-              :nohover_proc,
-              :resize_proc, 
-              :resize_release_proc,
-              :select_proc,
               :size,
               :tweens 
-              
-              
+ 
   alias_method :initialized?, :initialized
   
-                 
   def state_change(signal, data = {})
     changed
     notify_observers(self, signal, data)    
@@ -55,7 +46,7 @@ module Grandpa::ModelBase
     @children.each_value { |child| child.location+=(location) }
     state_change(:change_location!)
   end
-
+  
   def size=(size)
     @size=size
     state_change(:change_size!)
@@ -76,11 +67,11 @@ module Grandpa::ModelBase
   end
   
   def range_x
-    (@location.x..@location.x+@size.x)
+   (@location.x..@location.x+@size.x)
   end
-
+  
   def range_y
-    (@location.y..@location.y+@size.y)
+   (@location.y..@location.y+@size.y)
   end
   
   def intersects?(other_model)
@@ -93,70 +84,12 @@ module Grandpa::ModelBase
   def in_resize_zone?(pointer_view)
     pointer.x_range.include?(bounds.x) and pointer.y >= @location.y and pointer.y_bound <= bounds.y
   end
-
-   def enable_dragging_for(objects)
+  
+  def enable_dragging_for(objects)
     @enable_dragging_for += objects
     objects.flatten.each { |model| model.dragging_enabled = true } if @initialized
   end
   
-  def add_behaviors!(behaviors)
-    behaviors.kind_of?(Array) ? behaviors.each { |behavior| add_behavior!(behavior) } : add_behavior!(behaviors)
-  end
-  
-  def add_behavior!(behavior)
-    case behavior
-      when :clickable then make_clickable!
-      when :draggable then make_draggable!
-      when :resizable then make_resizable!
-      when :selectable then make_selectable!
-    end
-  end
-  
-  def resizable?
-    !@resize_proc.nil?
-  end
-  
-  def draggable?
-    !@drag_proc.nil? and @dragging_enabled
-  end
-  
-  def clickable?
-    !@mousedown_proc.nil?
-  end
-  
-  def playable?
-    !@play_proc.nil?
-  end
-  
-  def selectable?
-    !@select_proc.nil? and !@deselect_proc.nil?
-  end
-  
-  def make_clickable!
-     @mousedown_proc ||= lambda { |args| state_change(:mousedown!) }
-     @mouseup_proc ||= lambda { |args| state_change(:end_mousedown!) }
-  end
-  
-  def make_resizable!
-    @resize_proc ||= lambda { |args| }
-    @resize_release_proc ||= lambda { |args| }    
-  end
-  
-  def make_selectable!
-     @select_proc ||= lambda { |args| state_change(:select!) }
-     @deselect_proc ||= lambda { |args| state_change(:de_select!) }
-  end
-  
-  def make_draggable!
-     @drag_proc ||= lambda do |args|
-      state_change(:dragging!)
-      move_by(args[:amount])
-    end
-    @can_drag_proc ||= lambda { |args| true }
-    @drag_release_proc ||= lambda { |args| state_change(:end_dragging!) }
-    @dragging_enabled = true
-  end
-
   #alias_method :contains?, :intersects?
   
   def init_model
@@ -165,6 +98,10 @@ module Grandpa::ModelBase
   
   def has_children?
     respond_to?(:children) and !children.empty?
+  end
+  
+  def initialize(options = {})
+    initialize_base(options)
   end
   
   private
@@ -176,48 +113,30 @@ module Grandpa::ModelBase
       else
         child.move_by(@location)  unless child.absolute_position
       end
-      child.dragging_enabled = false unless !@enable_dragging_for.nil? and @enable_dragging_for.flatten.include?(child)
+      #child.dragging_enabled = false unless !@enable_dragging_for.nil? and @enable_dragging_for.flatten.include?(child)
     end
   end
- 
-      
+  
   def initialize_base(options = {})
     @initialized = false
     #@disabled_behaviors = {}
-    add_behaviors!(options[:behaviors]) unless options[:behaviors].nil?
-    add_behavior!(options[:behavior]) unless options[:behavior].nil?
-    add_behaviors!(@behaviors) unless @behaviors.nil?
-    add_behavior!(@behavior) unless @behavior.nil?
     @enable_dragging_for ||= []
     @tweens ||= []
-    @dragging_enabled ||= false
+    #@dragging_enabled ||= false
     @location ||= options[:location]
     @location ||= options[:relative_location]
     @location ||= Point[0,0]
     @size ||= options[:size] 
-    @marked_for_deletion ||= false   
-    #@play_proc ||= lambda { |args| state_change(:play!) }
-    #@after_play_proc ||= lambda { |args| state_change(:no_play!) }
-    @hover_proc ||= lambda { |args| state_change(:hover!) }
-    @nohover_proc ||= lambda { |args| state_change(:no_hover!) }
-    @event_data_proc ||= lambda { |args| }
-    @views_proc ||= options[:looks_like]
+    @marked_for_deletion ||= false
+    options[:behavior] ||= @behavior
+    @behavior = Grandpa::Model::UiBehavior.new(options)
+    #@views_proc ||= options[:looks_like]
     @name ||= options[:name]
     @children ||= options[:children] || {}
     @absolute_position ||= false
     @name ||= options[:name]
     initialize_children
     @initialized = true
-  end
- 
-end
-
-class Grandpa::Model
-  
-  include Grandpa::ModelBase
-  
-  def initialize(options)
-    initialize_base(options)
   end
   
 end

@@ -25,7 +25,7 @@ module Grandpa::Mvc
   end
   
   def clicked_views
-    @views.find_all { |view| view.intersects?(find_view(@pointer)) and view.model.clickable? }
+    @views.find_all { |view| (view.intersects?(find_view(@pointer)) and view.model.behavior.clickable?) }
   end
   
   def exit!
@@ -123,7 +123,7 @@ module Grandpa::Mvc
   def update_models
     @models.each do |model|
        model.update
-       model.intersects?(@pointer) ? model.hover_proc.call({}) : model.nohover_proc.call({}) unless @pointer.nil?
+       model.intersects?(@pointer) ? model.behavior.mouseover.call(:model => model) : model.behavior.mouseout.call(:model => model) unless @pointer.nil?
     end
   end
   
@@ -138,8 +138,8 @@ module Grandpa::Mvc
   end
   
   def use_simple_pointer(image)
-    view = SimplePointer.new(image)
-    pointer_model = Grandpa::Model.new(:name => :pointer, :size => Point[12,12])
+    view = SimplePointerViewFactory.new(image)
+    pointer_model = SimplePointer.new
     use_pointer(pointer_model, :looks_like => view) 
   end
   
@@ -172,7 +172,7 @@ module Grandpa::Mvc
     fullscreen = options[:fullscreen] || false
     size = (options[:size] || Point[1000, 600])
     @window = Grandpa::Window.new(self, size.x, size.y, fullscreen)
-    name = (options[:name] || :Grandpa)
+    name = (options[:name] || 'Grandpa')
     @window.caption = name
     @inited = true
   end

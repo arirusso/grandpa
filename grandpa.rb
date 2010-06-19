@@ -28,6 +28,7 @@ require 'lib/image'
 
 require 'lib/controller'
 require 'lib/core_extensions'
+require 'lib/model_ui_behavior'
 require 'lib/model_base'
 require 'lib/model_container'
 require 'lib/select_mode'

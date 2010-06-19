@@ -1,5 +1,14 @@
 class Grandpa::SimplePointer
   
+  include Grandpa::Model::Base 
+  
+  def initialize
+    initialize_base(:name => :pointer, :size => Point[12,12])
+  end
+  
+end
+class Grandpa::SimplePointerViewFactory
+  
   include Grandpa::ViewFactory
   
   def initialize(image)

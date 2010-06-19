@@ -6,13 +6,13 @@ class DraggingApp
   
   class Model
     
-    include Grandpa::ModelBase
+    include Grandpa::Model::Base
     
     def initialize
       @name = 'square'
       @location = Point[100,100] 
       @size = Point[10,10]
-      @behaviors = [:clickable, :draggable]
+      @behavior = [:clickable, :draggable]
     end
    
   end

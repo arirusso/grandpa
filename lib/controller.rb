@@ -27,7 +27,7 @@ module Grandpa::Controller
     end
     
     def handle_mouseup(type = :single)
-      @app.models.each { |model| model.mouseup_proc.call({}) if model.clickable? }
+      @app.models.each { |model| model.behavior.mouseup.call(:model => model) if model.behavior.clickable? }
       mode = @select_modes[type]
       unless mode.nil?
         handle_drag_release
@@ -46,24 +46,24 @@ module Grandpa::Controller
     def handle_drag_release
       @app.views.each do |view|
         receiver = view.model
-        receiver.receive_proc.call(:model => receiver, :items => @state.drag) if receiver.respond_to?(:receive_proc)
+        receiver.behavior.drop_receive.call(:model => receiver, :items => @state.drag) if receiver.behavior.drop_receiver?
       end
-      @state.drag.each { |draggable| draggable.drag_release_proc.call(:pointer => @app.pointer) }
+      @state.drag.each { |model| model.behavior.drag_release.call(:model => model, :pointer => @app.pointer) }
       @state.drag.clear
     end
     
     def handle_mousedown_action(models)
-      models.each { |model| model.mousedown_proc.call(:selection => @state.selection) }
+      models.each { |model| model.behavior.mousedown.call(:model => model, :selection => @state.selection) }
     end
     
     def get_draggable(type)
-      @state.mousedown[type][:items].find_all { |model| model.draggable? and model.can_drag_proc.call(:pointer => @app.pointer) }
+      @state.mousedown[type][:items].find_all { |model| model.behavior.draggable? }
     end
     
     def handle_drag_action(amount, type)
       @state.drag += get_draggable(type)
       @state.drag.uniq!
-      @state.drag.each { |item| item.drag_proc.call(:amount => amount, :selection => @state.selection, :pointer => @app.pointer) }
+      @state.drag.each { |model| model.behavior.drag.call(:model => model, :amount => amount, :selection => @state.selection, :pointer => @app.pointer) }
     end
     
     def dragging_allowed?(type)
