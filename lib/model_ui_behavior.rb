@@ -76,9 +76,9 @@ module Grandpa::Model
       #@dragging_enabled = true
     end
     
-    # triggers the state change signal automatically when a callback is called
+    # intercepts the callback and triggers the state change signal automatically when a callback is called
     def method_missing(m, *args, &block)
-      if public_methods.include?("#{m}=")
+      if public_methods.include?("#{m}=") # checks to see if the property is public
         @model.state_change(m.to_sym)
         return instance_variable_get("@#{m}")
       end

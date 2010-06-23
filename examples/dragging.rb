@@ -1,7 +1,9 @@
 require 'grandpa'
 
+
 # this simple example displays an animated square. its colors change when it's clicked on, and it can be dragged around the screen
 class DraggingApp
+  
   include Grandpa::Mvc
   
   class Model
