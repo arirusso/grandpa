@@ -1,7 +1,6 @@
 # each model object that has views is observed by a ViewManager  
 # 
-# it carries a hash of views (@states) that belong to the model and represent various UI states such as "hover" and "selected".  
-# it also has 3 stacks of views that represent the currently staged view states
+# it carries a hash of views (@states) that belong to the model and represent various UI states such as "mouseover" and "selected".  
     
 class Grandpa::ViewManager
   
@@ -24,6 +23,7 @@ class Grandpa::ViewManager
     @staged_states = [@states[:base]]
   end
   
+  # used when a model is copied
   def deep_copy(new_model)
     mgr = self.class.allocate
     mgr.model = new_model
@@ -54,10 +54,10 @@ class Grandpa::ViewManager
       when :drag then remove_visible_state(:drag_available)
       when :drag_release then remove_visible_state(:drag)
       when :select then remove_visible_state(:select_available)
-      when :deselect then remove_visible_state(:select) 
+      when :deselect then remove_visible_state(:select)
+      else add_visible_state(signal.to_sym)
     end
-    add_visible_state(signal.to_sym)
-    all_states.each { |s| s.update_observed(model, signal, data) if s.respond_to?('update_observed') }
+    all_states.each { |s| s.update if s.respond_to?('update') } # tell the views that the model has been updated
   end
 
   # all states, staged an stored
@@ -87,6 +87,7 @@ class Grandpa::ViewManager
     visible_state.draw(surface, @model, show_label)
   end
   
+  # initialize the views once the gosu window has been inited
   def handle_window_initialization(window)
     all_states.each { |state| state.handle_window_initialization(window) }
   end
@@ -97,6 +98,7 @@ class Grandpa::ViewManager
     @staged_states << @states[state] unless @states[state].nil?
   end
   
+  # the old way of handling transient states
   def insert_visible_state(state)
     if @staged_states.length.eql?(1)
       add_visible_state(state)

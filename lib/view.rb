@@ -41,7 +41,7 @@ class Grandpa::View
     false
   end
   
-  def update_observed(model, signal, data)
+  def update
     @components.each_value { |component| component.update }
   end
   
