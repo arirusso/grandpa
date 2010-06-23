@@ -2,7 +2,7 @@
 #
 # when behavior callbacks are called, I always pass the model in (as args[:model])... 
 # this will be helpful depending on the binding of the callback, ie if it were defined in an unconventional way
-class UiBehavior
+class Grandpa::UiBehavior
   
   attr_writer :drag_available,
       :drag,
