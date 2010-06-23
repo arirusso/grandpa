@@ -1,6 +1,9 @@
 module Grandpa::Model
   
-  # I may merge this back in to Model::Base at some point
+  # may merge this back in to Model::Base at some point ?
+  #
+  # when behavior callbacks are called, I always pass the model in (as args[:model])... 
+  # this will be helpful depending on the binding of the callback, ie if it were defined in an unconventional way
   class UiBehavior
     
     attr_writer :drag_available,
@@ -21,6 +24,7 @@ module Grandpa::Model
       behaviors.kind_of?(Array) ? behaviors.each { |behavior| add_behavior!(behavior) } : add_behavior!(behaviors)
     end
     
+    # convenince which allows you to add behaviors to a model by passing in a symbol such as :clickable or :draggable 
     def add_behavior!(behavior)
       case behavior
         when :clickable then make_clickable!
