@@ -1,6 +1,6 @@
 require 'grandpa'
 
-# this simple example displays an animated square. its colors change when it's clicked on, and it can be dragged around the screen
+# this simple example demonstrates animation, clicking and dragging.  when the animated square is clicked on, its colors change and it can be dragged around the screen
 class DraggingApp
   
   include Grandpa::Mvc
@@ -10,7 +10,6 @@ class DraggingApp
     include Grandpa::Model::Base
     
     def initialize
-      @name = 'square'
       @location = Point[100,100] 
       @size = Point[10,10]
       @behavior = [:clickable, :draggable]
@@ -50,7 +49,7 @@ class DraggingApp
   end
   
   def initialize
-    @name = 'Dragging' # this becomes the window caption
+    @name = 'Dragging' # this becomes the window caption.  if none is specified, the app class name is used
     @controller = Controller.new(self)
     use_simple_pointer('examples/images/pointer.png')
     add_model(Model.new, :looks_like => Views.new)
