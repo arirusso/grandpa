@@ -1,8 +1,6 @@
-module Grandpa::ViewFactory
+class Grandpa::ViewFactory
   
-  class SubviewFactory
-    
-    include Grandpa::ViewFactory
+  class SubviewFactory < Grandpa::ViewFactory
 
     def initialize(proc)
       @my_proc = proc

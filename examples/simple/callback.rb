@@ -5,9 +5,7 @@ class CallbackApp
   
   include Grandpa::Mvc
   
-  class Green
-    
-    include Grandpa::ViewFactory
+  class Green < Grandpa::ViewFactory 
     
     def describe_views_of(model)
       # the following defines the view for the "base" default state of the square
@@ -23,9 +21,7 @@ class CallbackApp
     
   end
   
-  class Red
-    
-    include Grandpa::ViewFactory
+  class Red < Grandpa::ViewFactory
     
     def describe_views_of(model)
       state :base do
@@ -36,6 +32,7 @@ class CallbackApp
   end
   
   def initialize
+    
     @controller = Grandpa::BasicController.new(self)
     
     use_simple_pointer('examples/images/pointer.png')
@@ -46,7 +43,7 @@ class CallbackApp
     add_model(big_model, :looks_like => Green.new) 
     
     5.times do |i|
-      model = Grandpa::BasicModel.new(:size => Point[20,20], :location => Point[500, (((i+1)*20)+(i*20))])
+      model = Grandpa::BasicModel.new(:size => Point[20,20], :location => Point[500, ((i+1)*20)+(i*20)])
       add_model(model, :looks_like => Red.new)
     end
     

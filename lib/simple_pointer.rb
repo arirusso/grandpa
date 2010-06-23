@@ -7,9 +7,8 @@ class Grandpa::SimplePointer
   end
   
 end
-class Grandpa::SimplePointerViewFactory
-  
-  include Grandpa::ViewFactory
+
+class Grandpa::SimplePointerViewFactory < Grandpa::ViewFactory
   
   def initialize(image)
     @image = image
