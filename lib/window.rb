@@ -32,17 +32,18 @@ class Grandpa::Window < Gosu::Window
     @app.update
   end
   
-  #def init_fonts
-  #  @fonts = {}
-  #  (8..32).each do |height|
-  #    @fonts[height] = Gosu::Font.new(self, Gosu::default_font_name, height)
-  #  end
-  #  @font = get_font(18)
-  #end
+  # this should be done differently
+  def init_fonts
+    @fonts = {}
+    (8..32).each do |height|
+      @fonts[height] = Gosu::Font.new(self, Gosu::default_font_name, height)
+    end
+    @font = get_font(18)
+  end
   
-  #def get_font(size)
-  #  @fonts[size]
-  #end
+  def get_font(size)
+    @fonts[size]
+  end
 
   # let the controller/etc know that a ui interaction has occurred
   def register(name, data = nil)
