@@ -1,3 +1,4 @@
+# I was tempted to combine this with Grandpa::Mvc but I would rather mvc retain the flexibility of a module
 class Grandpa::Window < Gosu::Window
   
   # namespaces
@@ -31,23 +32,25 @@ class Grandpa::Window < Gosu::Window
     @app.update
   end
   
-  def init_fonts
-    @fonts = {}
-    (8..32).each do |height|
-      @fonts[height] = Gosu::Font.new(self, Gosu::default_font_name, height)
-    end
-    @font = get_font(18)
-  end
+  #def init_fonts
+  #  @fonts = {}
+  #  (8..32).each do |height|
+  #    @fonts[height] = Gosu::Font.new(self, Gosu::default_font_name, height)
+  #  end
+  #  @font = get_font(18)
+  #end
   
-  def get_font size
-    @fonts[size]
-  end
- 
+  #def get_font(size)
+  #  @fonts[size]
+  #end
+
+  # let the controller/etc know that a ui interaction has occurred
   def register(name, data = nil)
     changed
     notify_observers(self, name, data)
   end
   
+  # todo- one of these for each gosu button id (can it be done dynamically?) 
   def button_down(id)
     case id
       when MsLeft then register(:left_mousedown)
@@ -56,6 +59,7 @@ class Grandpa::Window < Gosu::Window
     end
   end
   
+  # todo- one of these for each gosu button id (can it be done dynamically?)
   def button_up(id)
     case id 
       when MsLeft then register(:left_mouseup)
