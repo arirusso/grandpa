@@ -1,6 +1,5 @@
 require 'grandpa'
 
-
 # this simple example displays an animated square. its colors change when it's clicked on, and it can be dragged around the screen
 class DraggingApp
   
@@ -31,7 +30,7 @@ class DraggingApp
     def describe_views_of(model)
       # the following defines the view for the "base" default state of the square
       state :base do
-        # an Animation can animate any number of objects that include the module Grandpa::Viewable
+        # an Animation can animate any number of objects that include Grandpa::Viewable methods
         has :component => Grandpa::Animation.new(
           [Rectangle.new(bind_to(model, :size), 0xff00ff00, bind_to(model, :location), :border => 5), 
             Rectangle.new(lambda { model.size+10 }, 0xffff0000, lambda { model.location-5 }, :border => 5),
