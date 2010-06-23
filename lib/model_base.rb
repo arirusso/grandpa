@@ -93,7 +93,8 @@ module Grandpa::Model::Base
   #alias_method :contains?, :intersects?
   
   def init_model
-    initialize_base
+    initialize_base((@callback || {}))
+    @callback = nil
   end
   
   def has_children?
@@ -129,7 +130,7 @@ module Grandpa::Model::Base
     @size ||= options[:size] 
     @marked_for_deletion ||= false
     options[:behavior] ||= @behavior
-    @behavior = Grandpa::Model::UiBehavior.new(self, options)
+    @behavior = Grandpa::UiBehavior.new(self, options)
     #@views_proc ||= options[:looks_like]
     @name ||= options[:name]
     @children ||= options[:children] || {}
@@ -139,4 +140,9 @@ module Grandpa::Model::Base
     @initialized = true
   end
   
+end
+
+# class version
+class Grandpa::BasicModel
+  include Grandpa::Model::Base
 end

@@ -74,11 +74,6 @@ module Grandpa::Controller
       @select_modes.each_key { |type| handle_drag_action(amount, type) if dragging_allowed?(type) }
     end
   
-    
-  end
-  
-  module Clicking
-    
     def left_mousedown
       handle_mousedown
     end
@@ -91,11 +86,14 @@ module Grandpa::Controller
   
   module Dragging
     
-    include Clicking
-    
     def mouse_move
       handle_drag(mouse_move_amount)
     end
     
   end
+end
+
+# class version
+class Grandpa::BasicController
+  include Grandpa::Controller::Base
 end
