@@ -172,7 +172,7 @@ module Grandpa::Mvc
     fullscreen = options[:fullscreen] || false
     size = (options[:size] || Point[1000, 600])
     @window = Grandpa::Window.new(self, size.x, size.y, fullscreen)
-    name = (options[:name] || 'Grandpa')
+    name = (options[:name] || self.class.name)
     @window.caption = name
     @inited = true
   end
