@@ -13,7 +13,7 @@ Grandpa features:
 
 - A concise API for defining views, binding them to model properties, and describing visual state with respect to UI behaviors  
 
-- Conventional UI behaviors such as clicking, dragging, dropping, selection, and multi-selection trigger a model callback structure       
+- Conventional UI behaviors such as clicking, dragging, dropping, selection, and multi-selection trigger a callback structure       
 
 - Classes for primitive shape objects, backgrounds, pointer states, tweening and animation.
 
@@ -21,4 +21,12 @@ The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyfo
   
 == Requirements
 
-* Gosu (gem install gosu, http://github.com/jlnr/gosu)
+* {Gosu}[http://www.libgosu.org] (gem install gosu, {gosu on github}[http://github.com/jlnr/gosu])
+
+== Getting Started
+
+Have a look at some basic examples:
+
+{dragging}[http://github.com/arirusso/grandpa/blob/master/examples/simple/dragging.rb]
+{callback}[http://github.com/arirusso/grandpa/blob/master/examples/simple/callback.rb]
+
