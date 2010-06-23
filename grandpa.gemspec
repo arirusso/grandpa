@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = "grandpa"
-  s.version = '0.0.1'
+  s.version = '0.0.2'
 
   s.authors = ["Ari Russo"]
   s.date = Date.today
-  s.description = "Grandpa is a graphical MVC application framework for Ruby, built on top of the Gosu game development library."
+  s.description = "Grandpa is an MVC framework for Ruby which is built on the Gosu game development library."
   s.summary = "Ruby graphical MVC application framework"
   s.email = ["ari.russo@gmail.com"]
   s.extra_rdoc_files = ["README.rdoc"]

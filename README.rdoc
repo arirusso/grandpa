@@ -15,7 +15,7 @@ Grandpa features:
 
 - Conventional UI behaviors such as clicking, dragging, dropping, selection, and multi-selection trigger a model callback structure       
 
-- Useful graphics classes for primitive shape objects, backgrounds, pointer states, tweening and animation.
+- Classes for primitive shape objects, backgrounds, pointer states, tweening and animation.
 
 The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyforge.org)
   
