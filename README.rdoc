@@ -21,12 +21,13 @@ The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyfo
   
 == Requirements
 
-* {Gosu}[http://www.libgosu.org] (gem install gosu, {gosu on github}[http://github.com/jlnr/gosu])
+* {Gosu}[http://www.libgosu.org] (gem install gosu, or {on github}[http://github.com/jlnr/gosu])
 
 == Getting Started
 
 Have a look at some basic examples:
 
 {dragging}[http://github.com/arirusso/grandpa/blob/master/examples/simple/dragging.rb]
+
 {callback}[http://github.com/arirusso/grandpa/blob/master/examples/simple/callback.rb]
 
