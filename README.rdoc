@@ -17,7 +17,7 @@ Grandpa features:
 
 - Classes for primitive shape objects, backgrounds, pointer states, tweening and animation.
 
-The name Grandpa is a portmanteau of graphics and Camping (http://camping.rubyforge.org)
+The name Grandpa is a portmanteau of graphics and {Camping}[http://camping.rubyforge.org]
   
 == Requirements
 
