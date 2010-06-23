@@ -1,3 +1,4 @@
+# an individual view state
 class Grandpa::View
   
   #namespaces
@@ -7,21 +8,18 @@ class Grandpa::View
   
   attr_accessor :associated,
                 :components,
-                :font_size,
                 :label,
+                # label properties (should be in another class?)
+                :font_size,
                 :text_color,
                 :text_location
 
   
   def initialize(options={})
     @components = options[:components] || {}
-    #
     @components[:main] = options[:component] unless options[:component].nil?
-    #
-    @text_location = options[:text_location] || Point[5,5]
-    @text_color = options[:text_color] || 0xffcccccc
-    @font_size = options[:font_size] || 18
     @associated = options[:associate_with]
+    initialize_label(options)
   end
   
   # the top-left-most position values for its components
@@ -52,17 +50,30 @@ class Grandpa::View
   # draw my components
   def draw(window, model, show_label=false)
     @components.each_value { |component| component.draw(window) }
-    if !@label.nil? and (show_label or @label[:always_on]) 
-      string = @label[:block].call(model)
-      font = window.get_font(font_size)
-      location = @components[:main].location
-      font.draw(string, location.x + @text_location.x, location.y + @text_location.y, ZOrder::UI, 1.0, 1.0, @text_color)
-    end
+    should_draw_label = !@label.nil? and (show_label or @label[:always_on])
+    draw_label if should_draw_label
   end
   
   # the gosu window has been initialized, send it to the components in case they need it
   def handle_window_initialization(window)
     @components.each_value { |component| component.init(window) if component.respond_to?('init') }
+  end
+  
+  private
+  
+  # draw the label
+  def draw_label(window)
+    string = @label[:block].call(:model => model)
+    font = window.get_font(@font_size)
+    location = @components[:main].location
+    font.draw(string, location.x + @text_location.x, location.y + @text_location.y, ZOrder::UI, 1.0, 1.0, @text_color)
+  end
+  
+  # initialize all of the text properties
+  def initialize_label(options = {})
+    @text_location = options[:text_location] || Point[5,5]
+    @text_color = options[:text_color] || 0xffcccccc
+    @font_size = options[:font_size] || 18
   end
   
 end
