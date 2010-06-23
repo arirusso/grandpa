@@ -1,3 +1,4 @@
+# methods which will be called on view components (shapes, images, etc) 
 module Grandpa::Viewable
   
   #ns

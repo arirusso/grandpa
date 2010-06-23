@@ -1,4 +1,4 @@
-# todo fix this class, should delegate more
+# todo - fix this class, improve interaction with gosu
 class Grandpa::Image
   #ns
   include Grandpa::Geom
