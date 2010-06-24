@@ -29,7 +29,7 @@ module Grandpa::SelectMode
         previous_selection.each { |model| model.behavior.deselect.call(:model => model) }
         previous_selection.clear
       end
-      to_select.each { |model| model.behavior.select_proc.call(:model => model, :selection => previous_selection) }
+      to_select.each { |model| model.behavior.select.call(:model => model, :selection => previous_selection) }
       previous_selection << to_select
       previous_selection.flatten!.uniq!
     end

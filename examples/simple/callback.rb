@@ -39,7 +39,6 @@ class CallbackApp
     
     big_model = Grandpa::BasicModel.new(:size => Point[50,50], :location => Point[50,50], :behavior => :clickable)
     big_model.behavior.mousedown = lambda { |args| models.last.destroy! }
-    
     add_model(big_model, :looks_like => Green.new) 
     
     5.times do |i|

@@ -1,4 +1,4 @@
-# to-do needs to be decoupled from the model-- this is a lil spaghetti-ized
+# to-do 
 #
 # when behavior callbacks are called, I always pass the model in (as args[:model])... 
 # this will be helpful depending on the binding of the callback, ie if it were defined in an unconventional way
