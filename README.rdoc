@@ -27,7 +27,7 @@ The name Grandpa is a portmanteau of graphics and {Camping}[http://camping.rubyf
 
 == Optional
 
-* {ParseTree (3.0.2)}[http://rubyforge.org/projects/parsetree] and {Ruby2Ruby (1.2.1)}[http://seattlerb.rubyforge.org/ruby2ruby] will allow you to serialize and persist Proc object callbacks.  Make sure to watch the versions on these
+* {ParseTree (3.0.2)}[http://rubyforge.org/projects/parsetree] and {Ruby2Ruby (1.2.1)}[http://seattlerb.rubyforge.org/ruby2ruby] for callback persistence (advanced).  Make sure to watch the versions on these
 
 == Getting Started
 
