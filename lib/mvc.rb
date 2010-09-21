@@ -7,25 +7,41 @@ module Grandpa::Mvc
 
   attr_accessor :background,
               :controller,
-              :models,
               :name, 
               :views,
               :window
                 
+  attr_reader :models
+                
   def_delegators :window, :mouse_move_amount, :mouse_position 
   
   def start!
+    use_default_pointer if @pointer.nil? 
     init_mvc unless @inited
     @window.add_observer(@controller) unless @controller.nil?
     @started = true
-    @background.init(@window) if @background.kind_of?(Image) and !@background.nil? 
+    @background.init(@window) if @background.kind_of?(Image) && !@background.nil? 
     initialize_views 
     @window.show
     after_start if respond_to?(:after_start)
   end
   
+  # this will give you the extended list of models including system models
+  # like the pointer
+  def all_models
+    @models
+  end
+  
+  # this will give you the set of models that the user has defined
+  def models
+    system_models = [@pointer]
+    @models.map { |model| model unless system_models.include?(model) }.compact
+  end
+  
   def clicked_views
-    @views.find_all { |view| (view.intersects?(find_view(@pointer)) and view.model.behavior.clickable?) }
+    pointer_view = find_view(@pointer)
+    return [] if pointer_view.nil?
+    @views.find_all { |view| view.intersects?(pointer_view) && view.model.behavior.clickable? } 
   end
   
   def exit!
@@ -43,7 +59,7 @@ module Grandpa::Mvc
   
   def add_view_from_view_factory(view_factory, model)
     view_factory.describe_views_of(model)
-    unless view_factory.states.nil? or view_factory.states.empty?
+    unless view_factory.states.nil? || view_factory.states.empty?
       view_manager = Grandpa::ViewManager.new(model, view_factory)
       add_view(view_manager, model)
     end
@@ -54,7 +70,7 @@ module Grandpa::Mvc
     if child
       associate_with.dragging_enabled = false
     end
-    view.lazy_initialize(@window) if @started
+    #view.lazy_initialize(@window) if @started
     @views << view
   end
   
@@ -101,7 +117,7 @@ module Grandpa::Mvc
   end
   
   def destroy_model!(model)
-    @models.delete(model) if model.respond_to?('marked_for_deletion') and model.marked_for_deletion
+    @models.delete(model) if model.respond_to?('marked_for_deletion') && model.marked_for_deletion
     @views.delete(find_view(model))
     GC.start
   end
@@ -128,7 +144,7 @@ module Grandpa::Mvc
   end
   
   def update_pointer
-    pointer.location = @window.m
+    @pointer.location = @window.m
   end
   
   def use_pointer(model, options={})
@@ -141,6 +157,13 @@ module Grandpa::Mvc
     view = SimplePointerViewFactory.new(image)
     pointer_model = SimplePointer.new
     use_pointer(pointer_model, :looks_like => view) 
+  end
+
+  # this gives the app a 1x1 pixel black pointer
+  def use_default_pointer
+    pointer_view = SimplePointerViewFactory.new
+    pointer_model = SimplePointer.new(Point[1,1])
+    use_pointer(pointer_model, :looks_like => pointer_view)
   end
   
   private

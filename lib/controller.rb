@@ -67,7 +67,7 @@ module Grandpa::Controller
     end
     
     def dragging_allowed?(type)
-      (!@state.mousedown[type].nil? and @state.mousedown[type][:time] <= (Time.now - DragDelay) and @state.resize.empty?)  
+      (!@state.mousedown[type].nil? && @state.mousedown[type][:time] <= (Time.now - DragDelay) && @state.resize.empty?)  
     end
     
     def handle_drag(amount)

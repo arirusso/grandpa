@@ -35,7 +35,7 @@ class CallbackApp
     
     @controller = Grandpa::BasicController.new(self)
     
-    use_simple_pointer('examples/images/pointer.png')
+    #use_simple_pointer('examples/images/pointer.png')
     
     big_model = Grandpa::BasicModel.new(:size => Point[50,50], :location => Point[50,50], :behavior => :clickable)
     big_model.behavior.mousedown = lambda { |args| models.last.destroy! }
