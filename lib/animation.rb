@@ -1,3 +1,4 @@
+# this should use threading
 class Grandpa::Animation
   #ns
   include Grandpa::Geom

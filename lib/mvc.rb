@@ -11,7 +11,7 @@ module Grandpa::Mvc
               :views,
               :window
                 
-  attr_reader :models
+  attr_reader :models, :pointer
                 
   def_delegators :window, :mouse_move_amount, :mouse_position 
   
@@ -103,17 +103,15 @@ module Grandpa::Mvc
   def draw_background
     unless @background.nil?
       @background.kind_of?(Grandpa::Image) ?
+        # handle background image
         @background.draw(@window) :
+          # handle solid color background
           @window.draw_quad(0, 0, @background, 0, @size.y, @background, @size.x, 0, @background, @size.x, @size.y, @background, z=0)
     end
   end
   
   def draw_views
     @views.each { |view| view.draw(@window) }
-  end
-  
-  def pointer
-    @models.with_name(:pointer)
   end
   
   def destroy_model!(model)
@@ -139,7 +137,9 @@ module Grandpa::Mvc
   def update_models
     @models.each do |model|
        model.update
-       model.intersects?(@pointer) ? model.behavior.mouseover.call(:model => model) : model.behavior.mouseout.call(:model => model) unless @pointer.nil?
+       unless model.eql?(@pointer) || @pointer.nil?
+        model.intersects?(@pointer) ? model.behavior.mouseover.call(:model => model) : model.behavior.mouseout.call(:model => model)
+       end
     end
   end
   

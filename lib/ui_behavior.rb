@@ -4,7 +4,7 @@
 # this will be helpful depending on the binding of the callback, ie if it were defined in an unconventional way
 class Grandpa::UiBehavior
   
-  attr_writer :drag_available,
+  attr_accessor :drag_available,
       :drag,
       :drag_release,
       :mousedown,

@@ -1,4 +1,4 @@
-require 'grandpa'
+require './grandpa'
 
 # this simple example demonstrates animation, clicking and dragging.  when the animated square is clicked on, its colors change and it can be dragged around the screen
 class DraggingApp
@@ -49,7 +49,7 @@ class DraggingApp
   def initialize
     @name = 'Dragging' # this becomes the window caption.  if none is specified, the app class name is used
     @controller = Controller.new(self)
-    use_simple_pointer('examples/images/pointer.png')
+    #use_simple_pointer('examples/images/pointer.png')
     add_model(Model.new, :looks_like => Views.new)
   end
   
