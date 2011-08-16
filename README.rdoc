@@ -1,38 +1,10 @@
 = Grandpa
 
+This project is no longer useful and has been archived. I recommend using {Ray}[http://github.com/Mon-Ouie/ray] instead
+
 Author:: Ari Russo
 Copyright:: Copyright (c) 2010 Ari Russo
 
 == Summary
 
 Grandpa is an MVC framework for Ruby which is built on the Gosu game development library.
-
-== Description 
-
-Grandpa features: 
-
-- A concise API for defining views, binding them to model properties, and describing visual state with respect to UI behaviors  
-
-- Models are paired with a callback structure that enables UI behavior particular to classes or individual objects (think jquery).  A model's callback structure can be persisted along with its data      
-
-- Ready to use UI behaviors such as clicking, dragging, dropping, selection, and multi-selection.  
-
-- Classes for primitive shape objects, backgrounds, pointer states, tweening and animation.
-
-The name Grandpa is a portmanteau of graphics and {Camping}[http://camping.rubyforge.org]
-  
-== Requirements
-
-* {Gosu}[http://www.libgosu.org] (gem install gosu, or {on github}[http://github.com/jlnr/gosu])
-
-== Optional
-
-* {ParseTree (3.0.2)}[http://rubyforge.org/projects/parsetree] and {Ruby2Ruby (1.2.1)}[http://seattlerb.rubyforge.org/ruby2ruby] for callback persistence (advanced).  Make sure to watch the versions on these
-
-== Getting Started
-
-Have a look at some basic examples:
-
-* {callback}[http://github.com/arirusso/grandpa/blob/master/examples/simple/callback.rb]
-* {dragging}[http://github.com/arirusso/grandpa/blob/master/examples/simple/dragging.rb]
-
