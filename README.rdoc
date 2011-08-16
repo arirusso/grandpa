@@ -2,9 +2,8 @@
 
 This project is no longer useful and has been archived. I recommend using {Ray}[http://github.com/Mon-Ouie/ray] instead
 
-Author:: Ari Russo
-Copyright:: Copyright (c) 2010 Ari Russo
-
 == Summary
 
 Grandpa is an MVC framework for Ruby which is built on the Gosu game development library.
+
+Copyright (c) 2010 Ari Russo
